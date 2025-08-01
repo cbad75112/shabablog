@@ -38,14 +38,14 @@ export default defineConfig(ctx => {
         node: 'node20'
       },
       transpile: ['@quasar/quasar-ui-qcalendar'],
-      vueRouterMode: 'history', // available values: 'hash', 'history'
+      vueRouterMode: 'hash', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      publicPath: process.env.NODE_ENV === 'production' ? '/shabablog/' : '/',
+      publicPath: '/shabablog/', // 你的 repo 名稱
       // analyze: true,
       // env: {},
       // rawDefine: {}
