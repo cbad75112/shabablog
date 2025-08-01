@@ -38,44 +38,32 @@ export default defineConfig(ctx => {
         node: 'node20'
       },
       transpile: ['@quasar/quasar-ui-qcalendar'],
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
-      // vueRouterBase,
-      // vueDevtools,
-      // vueOptionsAPI: false,
-
-      // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
-
-      publicPath: '/shabablog/', // 你的 repo 名稱
-      distDir: 'docs', // 👈 編譯結果輸出到 docs
-      // analyze: true,
-      // env: {},
-      // rawDefine: {}
-      // ignorePublicFolder: true,
-      // minify: false,
-      // polyfillModulePreload: true,
-      // distDir
-
-      // extendViteConf (viteConf) {},
-      // viteVuePluginOptions: {},
-
+    
+      // 用相對路徑，避免 GitHub Pages 動態 import 404
+      publicPath: './',
+    
+      // 打包到 docs，供 GitHub Pages 使用
+      distDir: 'docs',
+    
+      vueRouterMode: 'hash',
+    
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/[name]-[hash].js',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash][extname]',
+          manualChunks: undefined
+        }
+      },
+    
       vitePlugins: [
         [
           '@intlify/unplugin-vue-i18n/vite',
           {
-            // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-            // compositionOnly: false,
-
-            // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
-            // you need to set `runtimeOnly: false`
-            // runtimeOnly: false,
-
             ssr: ctx.modeName === 'ssr',
-
-            // you need to set i18n resource including paths !
             include: [fileURLToPath(new URL('./src/i18n', import.meta.url))]
           }
         ],
-
         [
           'vite-plugin-checker',
           {
@@ -87,7 +75,8 @@ export default defineConfig(ctx => {
           { server: false }
         ]
       ]
-    },
+    }
+    ,
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
