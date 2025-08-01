@@ -14,12 +14,15 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
       'i18n',
+      'monaco-editor',
+      'aos',
       'axios'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: [
-      'app.scss'
+      'app.scss',
+      'custom-font.css',
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -31,7 +34,7 @@ export default defineConfig((ctx) => {
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
+      'mdi-v6',
       'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
@@ -40,10 +43,10 @@ export default defineConfig((ctx) => {
     build: {
       target: {
         browser: [ 'es2022', 'firefox115', 'chrome115', 'safari14' ],
-        node: 'node20'
+        node: 'node20',
       },
-
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      transpile: ['@quasar/quasar-ui-qcalendar'],
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -94,8 +97,11 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
-      config: {},
-
+      config: {
+        dark: 'auto' // 根據使用者系統設定自動切換
+      },
+      cssAddon: true,
+      iconSet: 'mdi-v6',
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
 
@@ -107,7 +113,7 @@ export default defineConfig((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Loading','Notify','Dialog','Dark']
     },
 
     // animations: 'all', // --- includes all animations

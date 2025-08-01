@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Cubic11';
+    src: url('/fonts/Cubic_11.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  /* 套用到整個 body，所有字都會使用這個字體 */
+  body {
+    font-family: 'Cubic11', 'Courier New', monospace;
+  }
+  
