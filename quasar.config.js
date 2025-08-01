@@ -46,6 +46,7 @@ export default defineConfig(ctx => {
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
       publicPath: '/shabablog/', // 你的 repo 名稱
+      distDir: 'docs', // 👈 編譯結果輸出到 docs
       // analyze: true,
       // env: {},
       // rawDefine: {}
