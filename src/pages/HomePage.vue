@@ -25,7 +25,7 @@
           class="rounded-borders q-mb-md"
         >
           <q-carousel-slide v-for="(img, index) in images" :key="index" :name="index + 1">
-            <img :src="img" :alt="`slide ${index + 1}`" class="carousel-img" />
+            <img :src="`${baseUrl}${img}`" :alt="`slide ${index + 1}`" class="carousel-img" />
           </q-carousel-slide>
         </q-carousel>
 
@@ -346,9 +346,9 @@
   const currentPage = ref(1)
   const pageSize = 5
   const router = useRouter()
-  const images = ref([])
+  const images = ref(['2.jpeg', '3.jpeg'])
   const latestPosts = []
-
+  const baseUrl = import.meta.env.BASE_URL
   const notes = ref([])
 
   const workEndTimeStr = localStorage.getItem('work-end-time') || '17:30'

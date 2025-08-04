@@ -1,0 +1,1 @@
+import{az as t,a3 as s,a4 as o,a5 as r,a6 as e,al as l}from"./index-CWDD2zWN.js";const c={name:"BlogPage"};function d(n,a,p,i,_,f){return o(),s(l,{flat:"",bordered:"",class:"q-pa-md"},{default:r(()=>a[0]||(a[0]=[e("div",{class:"text-h5"},"📝 Blog",-1),e("p",null,"Blog articles will be listed here.",-1)])),_:1,__:[0]})}const B=t(c,[["render",d]]);export{B as default};

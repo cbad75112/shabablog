@@ -52,15 +52,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple to="/tasks" class="menu-item">
-          <q-item-section avatar>
-            <q-icon name="work" class="menu-icon" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="menu-title">工作代辦事項</q-item-label>
-            <q-item-label caption class="menu-caption">待辦事項</q-item-label>
-          </q-item-section>
-        </q-item>
+
 
         <!-- 工具區塊：新增程式碼格式化 -->
         <q-item-label header class="menu-header q-mt-md">🛠 工具</q-item-label>
@@ -95,6 +87,15 @@
           <q-item-section>
             <q-item-label class="menu-title">工作連結</q-item-label>
             <q-item-label caption class="menu-caption">常用工作超連結管理</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-ripple to="/tasks" class="menu-item">
+          <q-item-section avatar>
+            <q-icon name="work" class="menu-icon" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="menu-title">工作代辦事項</q-item-label>
+            <q-item-label caption class="menu-caption">待辦事項</q-item-label>
           </q-item-section>
         </q-item>
 
