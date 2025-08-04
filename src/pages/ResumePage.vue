@@ -420,8 +420,8 @@
     Git: 'mdi-git'
   }
 
-  const workImg = '/images/resume/Logo.jpg'
-  const meImg = '/images/Me.png'
+  // const workImg = new URL('/images/resume/Logo.jpg', import.meta.env.BASE_URL).href
+  // const meImg = new URL('/images/Me.png', import.meta.env.BASE_URL).href
 
   const certs = [
     '乙級電腦硬體裝修技術士',
@@ -437,37 +437,45 @@
     '交通工具：汽車 / 機車'
   ]
 
-  const projects = [
-    {
-      img: '/images/resume/project1.jpg',
-      title: '科技部大專生研究計畫',
-      date: '2019/7 ~ 2020/2',
-      desc: '擔任計畫主持人，利用 OpenCV 進行生物辨識，建置 Chaos-AES 強化安全系統。',
-      points: [
-        '1. 透過 NFC 系統達到門禁管理目的',
-        '2. 利用生物辨識判定出入人員身份',
-        '3. Chaos-AES 加密登入資料並存至資料庫',
-        '4. 對檔案做 AES 加密'
-      ]
-    },
-    {
-      img: '/images/resume/project2.jpg',
-      title: '碩士論文、期刊計畫和研討會',
-      date: '2020/9 ~ 2022/1',
-      desc: '論文主題為「基於四階混沌遊戲表示結合雙混沌系統和 SHA-256 之量子圖像加密應用於5G物聯網」',
-      points: [
-        '期刊：Energy Efficiency of Mobile Devices Using Fuzzy Logic Control by Exponential Weight with Priority-Based Rate Control in Multi-Radio Opportunistic Networks',
-        '研討會：The 11th International Multi-Conference on Engineering and Technology Innovation 2022 (IMETI2022)-基於混沌遊戲表示之量子圖像加密應用於5G物聯網方法'
-      ]
-    },
-    {
-      img: '/images/resume/project3.jpg',
-      title: '107全國機器人創意競賽獎狀',
-      date: '',
-      desc: '參賽107全國機器人創意競賽，擔任組長並榮獲第三名',
-      points: []
-    }
-  ]
+  function getImgPath(path) {
+  const base = import.meta.env.BASE_URL || window.location.pathname || '/'
+  return `${base.replace(/\/$/, '')}${path}`
+}
+
+const workImg = getImgPath('/images/resume/Logo.jpg')
+const meImg = getImgPath('/images/Me.png')
+
+const projects = [
+  {
+    img: getImgPath('/images/resume/project1.jpg'),
+    title: '科技部大專生研究計畫',
+    date: '2019/7 ~ 2020/2',
+    desc: '擔任計畫主持人，利用 OpenCV 進行生物辨識，建置 Chaos-AES 強化安全系統。',
+    points: [
+      '1. 透過 NFC 系統達到門禁管理目的',
+      '2. 利用生物辨識判定出入人員身份',
+      '3. Chaos-AES 加密登入資料並存至資料庫',
+      '4. 對檔案做 AES 加密'
+    ]
+  },
+  {
+    img: getImgPath('/images/resume/project2.jpg'),
+    title: '碩士論文、期刊計畫和研討會',
+    date: '2020/9 ~ 2022/1',
+    desc: '論文主題為「基於四階混沌遊戲表示結合雙混沌系統和 SHA-256 之量子圖像加密應用於5G物聯網」',
+    points: [
+      '期刊：Energy Efficiency of Mobile Devices Using Fuzzy Logic Control by Exponential Weight with Priority-Based Rate Control in Multi-Radio Opportunistic Networks',
+      '研討會：The 11th International Multi-Conference on Engineering and Technology Innovation 2022 (IMETI2022)-基於混沌遊戲表示之量子圖像加密應用於5G物聯網方法'
+    ]
+  },
+  {
+    img: getImgPath('/images/resume/project3.jpg'),
+    title: '107全國機器人創意競賽獎狀',
+    date: '',
+    desc: '參賽107全國機器人創意競賽，擔任組長並榮獲第三名',
+    points: []
+  }
+]
 </script>
 
 <style scoped>
