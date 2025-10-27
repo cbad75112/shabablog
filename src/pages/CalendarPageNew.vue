@@ -63,6 +63,7 @@
                     class="event-actions"
                   >
                     <q-btn
+                    v-if="authStore.mode === 'admin'"
                       dense
                       flat
                       round
@@ -72,6 +73,7 @@
                       @click.stop="openEditDialog(displayedEvent.event)"
                     />
                     <q-btn
+                    v-if="authStore.mode === 'admin'"
                       dense
                       flat
                       round
@@ -197,6 +199,7 @@
 
     <!-- 新增事件按鈕 -->
     <q-btn
+    v-if="authStore.mode === 'admin'"
       round
       color="primary"
       icon="add"
@@ -223,6 +226,8 @@
   import NavigationBar from 'src/components/NavigationBar.vue'
   import { useQuasar } from 'quasar'
   import { useRoute } from 'vue-router'
+  import { useAuthStore } from 'src/stores/useAuthStore'
+const authStore = useAuthStore()
 
   const route = useRoute()
   const $q = useQuasar()

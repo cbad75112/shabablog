@@ -52,8 +52,6 @@
           </q-item-section>
         </q-item>
 
-
-
         <!-- 工具區塊：新增程式碼格式化 -->
         <q-item-label header class="menu-header q-mt-md">🛠 工具</q-item-label>
         <q-separator spaced />
@@ -125,6 +123,16 @@
               </q-toolbar-title> -->
 
         <q-space />
+        <!-- 新增：登入按鈕 -->
+        <q-btn
+          flat
+          dense
+          round
+          :icon="authStore.mode === 'admin' ? 'lock_open' : 'lock'"
+          :color="authStore.mode === 'admin' ? 'positive' : 'grey'"
+          @click="showPasswordDialog = true"
+          aria-label="Login Mode"
+        />
 
         <q-toggle
           v-model="isDark"
@@ -151,6 +159,7 @@
           </div>
         </transition>
         <q-btn
+          v-if="authStore.mode === 'admin'"
           dense
           flat
           icon="build"
@@ -211,6 +220,31 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- 密碼輸入 Dialog -->
+    <q-dialog v-model="showPasswordDialog" persistent>
+      <q-card style="min-width: 300px">
+        <q-card-section>
+          <div class="text-h6">輸入管理密碼</div>
+        </q-card-section>
+
+        <q-card-section>
+          <q-input
+            v-model="passwordInput"
+            type="password"
+            label="請輸入密碼"
+            filled
+            dense
+            autofocus
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="取消" color="grey" v-close-popup />
+          <q-btn flat label="確認" color="primary" @click="verifyPassword" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-layout>
 </template>
 
@@ -218,9 +252,14 @@
   import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
   import { useQuasar } from 'quasar'
   import { useRoute } from 'vue-router'
+  import { useAuthStore } from 'src/stores/useAuthStore' // ✅ 新增這行
 
   const $q = useQuasar()
   const route = useRoute()
+  const authStore = useAuthStore() // ✅ 使用 Pinia store
+
+  const showPasswordDialog = ref(false)
+  const passwordInput = ref('')
 
   const leftDrawerOpen = ref(false)
   const isDark = ref(true)
@@ -272,7 +311,21 @@
     }, 4000)
 
     applyOverflowStyle()
+    authStore.loadMode()
   })
+
+  // 驗證密碼
+  const verifyPassword = () => {
+    if (passwordInput.value === '072830') {
+      authStore.setMode('admin')
+      $q.notify({ type: 'positive', message: '登入成功，進入管理模式！' })
+    } else {
+      authStore.setMode('guest')
+      $q.notify({ type: 'warning', message: '密碼錯誤，切換為訪客模式。' })
+    }
+    showPasswordDialog.value = false
+    passwordInput.value = ''
+  }
 
   onBeforeUnmount(() => {
     if (intervalId) clearInterval(intervalId)

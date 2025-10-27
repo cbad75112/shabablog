@@ -3,7 +3,7 @@
     <div class="text-h5 q-mb-md text-outline">🔗 工作常用連結</div>
 
     <!-- 分類管理區塊 -->
-    <q-card flat bordered class="q-pa-md q-mb-lg">
+    <q-card  v-if="authStore.mode === 'admin'" flat bordered class="q-pa-md q-mb-lg">
       <div class="row items-center q-mb-sm justify-between">
         <div class="text-subtitle1">分類管理</div>
         <q-btn
@@ -60,7 +60,7 @@
           map-options
           style="min-width: 150px"
         />
-        <q-btn icon="add" label="新增連結" color="primary" @click="openAddDialog" class="q-ml-sm" />
+        <q-btn  v-if="authStore.mode === 'admin'" icon="add" label="新增連結" color="primary" @click="openAddDialog" class="q-ml-sm" />
       </div>
 
       <q-separator />
@@ -93,6 +93,7 @@
 
           <q-item-section side>
             <q-btn
+             v-if="authStore.mode === 'admin'"
               flat
               round
               dense
@@ -103,6 +104,7 @@
               <q-tooltip>編輯</q-tooltip>
             </q-btn>
             <q-btn
+             v-if="authStore.mode === 'admin'"
               flat
               round
               dense
@@ -185,6 +187,8 @@
 <script setup>
   import { ref, computed, onMounted } from 'vue'
   import { useQuasar } from 'quasar'
+  import { useAuthStore } from 'src/stores/useAuthStore'
+  const authStore = useAuthStore()
 
   const $q = useQuasar()
   const isDark = computed(() => $q.dark.isActive)

@@ -7,8 +7,16 @@
         工作代辦事項
       </div>
       <div class="row q-gutter-sm">
-        <q-btn unelevated icon="add" label="新增任務" color="primary" @click="openTaskDialog()" />
         <q-btn
+          v-if="authStore.mode === 'admin'"
+          unelevated
+          icon="add"
+          label="新增任務"
+          color="primary"
+          @click="openTaskDialog()"
+        />
+        <q-btn
+          v-if="authStore.mode === 'admin'"
           unelevated
           icon="category"
           label="分類管理"
@@ -103,7 +111,7 @@
               v-ripple
             >
               <q-item-section side>
-                <q-checkbox
+                <q-checkbox v-if="authStore.mode === 'admin'"
                   v-model="task.completed"
                   color="primary"
                   @update:model-value="saveTasks"
@@ -134,6 +142,7 @@
 
               <q-item-section side>
                 <q-btn
+                  v-if="authStore.mode === 'admin'"
                   dense
                   flat
                   round
@@ -142,6 +151,7 @@
                   @click.stop="openTaskDialog(task)"
                 />
                 <q-btn
+                  v-if="authStore.mode === 'admin'"
                   dense
                   flat
                   round
@@ -252,7 +262,9 @@
   import { ref, computed, onMounted } from 'vue'
   import { uid, date } from 'quasar'
   import { useQuasar } from 'quasar'
-const $q = useQuasar()
+  import { useAuthStore } from 'src/stores/useAuthStore'
+  const authStore = useAuthStore()
+  const $q = useQuasar()
 
   const tasks = ref([])
   const categories = ref(['預設分類'])
@@ -370,37 +382,36 @@ const $q = useQuasar()
     showTaskDialog.value = false
   }
 
-// 刪除任務
-const deleteTask = id => {
-  const task = tasks.value.find(t => t.id === id)
-  $q.dialog({
-    title: '確認刪除',
-    message: `確定要刪除任務「${task?.title || ''}」嗎？`,
-    cancel: true,
-    persistent: true
-  }).onOk(() => {
-    tasks.value = tasks.value.filter(t => t.id !== id)
-    saveTasks()
-    $q.notify({ type: 'positive', message: '任務已刪除' })
-  })
-}
-const deleteCategory = index => {
-  const cat = categories.value[index]
-  $q.dialog({
-    title: '確認刪除分類',
-    message: `確定要刪除分類「${cat}」嗎？\n此分類的任務將移動到「預設分類」。`,
-    cancel: true,
-    persistent: true
-  }).onOk(() => {
-    tasks.value.forEach(t => {
-      if (t.category === cat) t.category = '預設分類'
+  // 刪除任務
+  const deleteTask = id => {
+    const task = tasks.value.find(t => t.id === id)
+    $q.dialog({
+      title: '確認刪除',
+      message: `確定要刪除任務「${task?.title || ''}」嗎？`,
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      tasks.value = tasks.value.filter(t => t.id !== id)
+      saveTasks()
+      $q.notify({ type: 'positive', message: '任務已刪除' })
     })
-    categories.value.splice(index, 1)
-    saveCategories()
-    $q.notify({ type: 'warning', message: `分類「${cat}」已刪除，相關任務移至預設分類` })
-  })
-}
-
+  }
+  const deleteCategory = index => {
+    const cat = categories.value[index]
+    $q.dialog({
+      title: '確認刪除分類',
+      message: `確定要刪除分類「${cat}」嗎？\n此分類的任務將移動到「預設分類」。`,
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      tasks.value.forEach(t => {
+        if (t.category === cat) t.category = '預設分類'
+      })
+      categories.value.splice(index, 1)
+      saveCategories()
+      $q.notify({ type: 'warning', message: `分類「${cat}」已刪除，相關任務移至預設分類` })
+    })
+  }
 
   // 日期格式化
   const formatDate = d => {
