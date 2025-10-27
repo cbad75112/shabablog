@@ -1,14 +1,12 @@
----
-分類: quasar
-標題: 當quasar修改路徑編譯後沒有畫面的問題
-時間: 2025/8/1 下午3:49:36
----
-
 # 當 Quasar 修改路徑編譯後沒有畫面的問題
 
 > 分類：Quasar  
 > 參考來源：[Vuetify Dev Config 文件](https://vuetify3.tigernaxo.com/workshop/vuetify/devconfig.html)
 
+---
+分類: quasar
+標題: 當quasar修改路徑編譯後沒有畫面的問題
+時間: 2025/8/1 下午3:49:36
 ---
 
 當我們在 **Quasar/Vue 專案**中修改 `publicPath` 或使用 **History 模式的路由**（例如 `/blog`、`/resume` 等子路徑）時，  
