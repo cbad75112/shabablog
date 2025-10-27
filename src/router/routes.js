@@ -9,7 +9,7 @@ const routes = [
       {
         path: '/notes',
         name: 'notes',
-        component: () => import('pages/NotesPage.vue')
+        component: () => import('pages/NotesPage_1141027.vue')
       }
       ,
       { path: 'calendar',name: 'calendar', component: () => import('pages/CalendarPageNew.vue') },
