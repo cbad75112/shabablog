@@ -45,7 +45,7 @@
         </q-input>
 
         <!-- Tags -->
-        <q-card flat bordered class="q-pa-md q-mb-md">
+        <!-- <q-card flat bordered class="q-pa-md q-mb-md">
           <div class="text-subtitle1 text-outline">🏷️ Popular Tags</div>
           <q-separator spaced />
           <div class="q-gutter-sm q-mt-sm">
@@ -62,114 +62,22 @@
               {{ tag }}
             </q-chip>
           </div>
-        </q-card>
+        </q-card> -->
 
         <!-- Latest Posts & Notes -->
         <!-- 最新文章與筆記 -->
-        <q-card flat bordered class="q-pa-md q-mb-md" style="min-height: 1200px">
-          <div class="text-h5 q-mb-sm text-outline text-subtitle1">📝 Latest Posts & Notes</div>
-          <q-separator spaced />
+        <q-card flat bordered class="q-pa-md q-mb-md">
+          <div class="text-h5 q-mb-sm text-outline text-subtitle1">📝 Latest Notes</div>
 
-          <!-- Blog-style 卡片 -->
-          <div>
-            <div
-              v-for="post in paginatedCombined"
-              :key="post.id"
-              class="glow-border-wrapper q-mb-md"
-            >
-              <div class="glow-border-inner">
-                <q-card
-                  class="blog-card"
-                  flat
-                  bordered
-                  :tag="post.link ? 'a' : 'div'"
-                  :href="post.link || null"
-                  @click="goToPost(post)"
-                >
-                  <img v-if="post.cover" :src="post.cover" class="blog-cover" alt="封面" />
-                  <q-card-section>
-                    <div class="text-h6 text-note text-outline">{{ post.title }}</div>
-                    <div class="text-caption text-grey q-mb-sm">
-                      {{ post.date }} ・ {{ post.category || '未分類' }}
-                    </div>
-                    <div class="text-body2 ellipsis-2-lines">
-                      <q-chip
-                        v-for="(tag, index) in post.tags
-                          .split(',')
-                          .map(t => t.trim())
-                          .filter(t => t)"
-                        :key="index"
-                        color="indigo"
-                        text-color="white"
-                        icon="label"
-                      >
-                        {{ tag }}
-                      </q-chip>
-                    </div>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn flat label="閱讀更多" color="blue-3" icon="open_in_new" />
-                  </q-card-actions>
-                </q-card>
-              </div>
-            </div>
-          </div>
+          <q-list bordered padding>
+            <q-item v-for="(note, index) in notes" :key="index" clickable @click="openNote(note)">
+              <q-item-section>{{ note.name }}</q-item-section>
+            </q-item>
 
-          <!-- 小於5筆的漂亮提示 -->
-          <q-card
-            v-if="paginatedCombined.length > 0 && paginatedCombined.length < 5"
-            flat
-            bordered
-            class="q-mt-md q-pa-lg flex flex-center text-center"
-            style="
-              background: linear-gradient(135deg, #fbc2eb 0%, #8ec5fc 100%);
-              color: white;
-              box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
-              border-radius: 12px;
-            "
-          >
-            <q-icon name="info" size="48px" class="q-mr-md" />
-            <div>
-              <div class="text-h6 q-mb-xs" style="font-weight: 600">小提醒</div>
-              <div class="text-subtitle2" style="opacity: 0.9">
-                本頁僅有
-                <strong>{{ paginatedCombined.length }}</strong> 筆資料，別忘了翻頁查看更多精彩內容！
-              </div>
-            </div>
-          </q-card>
-
-          <!-- 沒資料時提示 -->
-          <q-card
-            v-else-if="paginatedCombined.length === 0"
-            flat
-            bordered
-            class="q-mt-md q-pa-lg flex flex-center text-center"
-            style="
-              background: linear-gradient(135deg, #f0e5d2 0%, #c8a97a 100%);
-              color: #666;
-              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-              border-radius: 12px;
-            "
-          >
-            <q-icon name="hourglass_empty" size="48px" class="q-mr-md" />
-            <div>
-              <div class="text-h6 q-mb-xs" style="font-weight: 600">暫無內容</div>
-              <div class="text-subtitle2" style="opacity: 0.7">
-                目前沒有文章或筆記，請稍後再回來看看！
-              </div>
-            </div>
-          </q-card>
-
-          <q-pagination
-            v-if="totalPages > 1"
-            v-model="currentPage"
-            :max="totalPages"
-            max-pages="5"
-            direction-links
-            boundary-links
-            class="q-mt-sm"
-            color="blue-3"
-          />
+            <q-item v-if="notes.length === 0">
+              <q-item-section class="text-grey">目前沒有筆記</q-item-section>
+            </q-item>
+          </q-list>
         </q-card>
       </div>
 
@@ -324,11 +232,11 @@
 </template>
 
 <script setup>
-  import { ref, computed, onMounted } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useQuasar } from 'quasar'
   // import { date as qDate } from 'quasar'
-  const selectedFilterTags = ref([])
+  // const selectedFilterTags = ref([])
   const upcomingEvents = ref([])
   const slide = ref(1)
   const searchQuery = ref('')
@@ -342,12 +250,12 @@
 
   // const tags = computed(() => allTagsOptions)
   const $q = useQuasar()
-  const isDark = computed(() => $q.dark.isActive)
-  const currentPage = ref(1)
-  const pageSize = 5
+  // const isDark = computed(() => $q.dark.isActive)
+  // const currentPage = ref(1)
+  // const pageSize = 5
   const router = useRouter()
   const images = ref(['2.jpeg', '3.jpeg'])
-  const latestPosts = []
+  // const latestPosts = []
   const baseUrl = import.meta.env.BASE_URL
   const notes = ref([])
 
@@ -414,8 +322,56 @@
     }
 
     loadTasks()
+    fetchNotes()
   })
 
+  const username = 'cbad75112'
+  const repo = 'shabablog'
+  const notesFolder = 'notes'
+  // 讀取 GitHub 筆記清單
+  const fetchNotes = async () => {
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${username}/${repo}/contents/src/${notesFolder}`
+      )
+      const data = await res.json()
+      const allNotes = []
+
+      for (const item of data) {
+        if (item.type === 'dir') {
+          const subRes = await fetch(
+            `https://api.github.com/repos/${username}/${repo}/contents/${item.path}`
+          )
+          const subData = await subRes.json()
+          subData
+            .filter(f => f.name.endsWith('.md'))
+            .forEach(f => {
+              allNotes.push({
+                name: f.name.replace('.md', ''),
+                path: f.path,
+                category: item.name,
+                url: f.download_url
+              })
+            })
+        } else if (item.name.endsWith('.md')) {
+          allNotes.push({
+            name: item.name.replace('.md', ''),
+            path: item.path,
+            category: '未分類',
+            url: item.download_url
+          })
+        }
+      }
+
+      notes.value = allNotes
+    } catch (err) {
+      console.error('抓取 GitHub 筆記清單失敗', err)
+    }
+  }
+
+  const openNote = note => {
+    window.open(note.url, '_blank')
+  }
   // 載入任務資料
   const loadTasks = () => {
     const stored = localStorage.getItem('workTasks')
@@ -487,56 +443,56 @@
   //   return qDate.formatDate(dateStr, 'YYYY/MM/DD (ddd)')
   // }
 
-  const combined = computed(() => {
-    const all = [
-      ...latestPosts,
-      ...notes.value.map((n, i) => ({
-        id: `n${i}`,
-        title: n.title,
-        date: n.datetime,
-        category: n.category,
-        tags: n.tags,
-        type: 'note'
-      }))
-    ]
+  // const combined = computed(() => {
+  //   const all = [
+  //     ...latestPosts,
+  //     ...notes.value.map((n, i) => ({
+  //       id: `n${i}`,
+  //       title: n.title,
+  //       date: n.datetime,
+  //       category: n.category,
+  //       tags: n.tags,
+  //       type: 'note'
+  //     }))
+  //   ]
 
-    const q = searchQuery.value.toLowerCase()
+  //   const q = searchQuery.value.toLowerCase()
 
-    const sorted = all.sort((a, b) => {
-      const dateA = parseCustomDate(a.date)
-      const dateB = parseCustomDate(b.date)
-      return dateB - dateA // 新到舊
-    })
+  //   const sorted = all.sort((a, b) => {
+  //     const dateA = parseCustomDate(a.date)
+  //     const dateB = parseCustomDate(b.date)
+  //     return dateB - dateA // 新到舊
+  //   })
 
-    return searchQuery.value ? sorted.filter(item => item.title.toLowerCase().includes(q)) : sorted
-  })
+  //   return searchQuery.value ? sorted.filter(item => item.title.toLowerCase().includes(q)) : sorted
+  // })
 
-  function parseCustomDate(dateStr) {
-    if (!dateStr) return new Date(0)
+  // function parseCustomDate(dateStr) {
+  //   if (!dateStr) return new Date(0)
 
-    const [datePart, timePart] = dateStr.split(' ')
-    const [year, month, day] = datePart.split('/').map(Number)
+  //   const [datePart, timePart] = dateStr.split(' ')
+  //   const [year, month, day] = datePart.split('/').map(Number)
 
-    const timeMatch = timePart.match(/^(上午|下午)(\d{1,2}):(\d{2}):(\d{2})$/)
-    if (!timeMatch) return new Date(0)
+  //   const timeMatch = timePart.match(/^(上午|下午)(\d{1,2}):(\d{2}):(\d{2})$/)
+  //   if (!timeMatch) return new Date(0)
 
-    const [, meridiem, hourStr, minuteStr, secondStr] = timeMatch
-    let hour = Number(hourStr)
-    const minute = Number(minuteStr)
-    const second = Number(secondStr)
+  //   const [, meridiem, hourStr, minuteStr, secondStr] = timeMatch
+  //   let hour = Number(hourStr)
+  //   const minute = Number(minuteStr)
+  //   const second = Number(secondStr)
 
-    // 轉換為 24 小時制
-    if (meridiem === '下午' && hour < 12) {
-      hour += 12
-    } else if (meridiem === '上午' && hour === 12) {
-      hour = 0
-    }
+  //   // 轉換為 24 小時制
+  //   if (meridiem === '下午' && hour < 12) {
+  //     hour += 12
+  //   } else if (meridiem === '上午' && hour === 12) {
+  //     hour = 0
+  //   }
 
-    // 組合為 ISO 格式時間字串
-    const isoString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`
+  //   // 組合為 ISO 格式時間字串
+  //   const isoString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`
 
-    return new Date(isoString)
-  }
+  //   return new Date(isoString)
+  // }
 
   const allTagsOptions = ref([])
 
@@ -552,72 +508,72 @@
   ]
 
   // 調整 combined 計算屬性，加入多標籤篩選邏輯
-  const filteredCombined = computed(() => {
-    let filtered = combined.value
-    // 如果有篩選標籤，過濾條件：文章標籤陣列須包含全部被選標籤(AND邏輯)
-    if (selectedFilterTags.value.length > 0) {
-      filtered = filtered.filter(post => {
-        if (!post.tags || typeof post.tags !== 'string') return false
+  // const filteredCombined = computed(() => {
+  //   let filtered = combined.value
+  //   // 如果有篩選標籤，過濾條件：文章標籤陣列須包含全部被選標籤(AND邏輯)
+  //   if (selectedFilterTags.value.length > 0) {
+  //     filtered = filtered.filter(post => {
+  //       if (!post.tags || typeof post.tags !== 'string') return false
 
-        const postTagArray = post.tags
-          .split(',')
-          .map(t => t.trim())
-          .filter(t => t)
+  //       const postTagArray = post.tags
+  //         .split(',')
+  //         .map(t => t.trim())
+  //         .filter(t => t)
 
-        // 檢查 postTagArray 是否包含所有篩選標籤 (AND 邏輯)
-        return selectedFilterTags.value.every(t => postTagArray.includes(t))
-      })
-    }
+  //       // 檢查 postTagArray 是否包含所有篩選標籤 (AND 邏輯)
+  //       return selectedFilterTags.value.every(t => postTagArray.includes(t))
+  //     })
+  //   }
 
-    // 搜尋條件
-    if (searchQuery.value) {
-      const q = searchQuery.value.toLowerCase()
-      filtered = filtered.filter(item => item.title.toLowerCase().includes(q))
-    }
+  //   // 搜尋條件
+  //   if (searchQuery.value) {
+  //     const q = searchQuery.value.toLowerCase()
+  //     filtered = filtered.filter(item => item.title.toLowerCase().includes(q))
+  //   }
 
-    return filtered
-  })
+  //   return filtered
+  // })
 
-  const totalPages = computed(() => Math.ceil(filteredCombined.value.length / pageSize))
+  // const totalPages = computed(() => Math.ceil(filteredCombined.value.length / pageSize))
 
-  function goToPost(post) {
-    if (post.type === 'note') {
-      router.push({ name: 'notes', query: { selectedId: post.title } })
-    } else if (post.link) {
-      window.open(post.link, '_blank')
-    }
-  }
+  // function goToPost(post) {
+  //   if (post.type === 'note') {
+  //     router.push({ name: 'notes', query: { selectedId: post.title } })
+  //   } else if (post.link) {
+  //     window.open(post.link, '_blank')
+  //   }
+  // }
 
   function openLink(url) {
     window.open(url, '_blank')
   }
 
   // 切換篩選標籤（多選）
-  function toggleTagFilter(tag) {
-    const idx = selectedFilterTags.value.indexOf(tag)
-    if (idx === -1) {
-      selectedFilterTags.value.push(tag)
-    } else {
-      selectedFilterTags.value.splice(idx, 1)
-    }
-    currentPage.value = 1 // 篩選時回到第1頁
-  }
+  // function toggleTagFilter(tag) {
+  //   const idx = selectedFilterTags.value.indexOf(tag)
+  //   if (idx === -1) {
+  //     selectedFilterTags.value.push(tag)
+  //   } else {
+  //     selectedFilterTags.value.splice(idx, 1)
+  //   }
+  //   currentPage.value = 1 // 篩選時回到第1頁
+  // }
 
-  const paginatedCombined = computed(() => {
-    const start = (currentPage.value - 1) * pageSize
-    return filteredCombined.value.slice(start, start + pageSize)
-  })
+  // const paginatedCombined = computed(() => {
+  //   const start = (currentPage.value - 1) * pageSize
+  //   return filteredCombined.value.slice(start, start + pageSize)
+  // })
 
-  function getChipStyle(tag) {
-    const selected = selectedFilterTags.value.includes(tag)
-    if (selected) {
-      return 'background: #3f51b5; color: white;'
-    } else {
-      return isDark.value
-        ? 'background: transparent; border: 1px solid #3f51b5; color: white;'
-        : 'background: transparent; border: 1px solid #3f51b5; color: #3f51b5;'
-    }
-  }
+  // function getChipStyle(tag) {
+  //   const selected = selectedFilterTags.value.includes(tag)
+  //   if (selected) {
+  //     return 'background: #3f51b5; color: white;'
+  //   } else {
+  //     return isDark.value
+  //       ? 'background: transparent; border: 1px solid #3f51b5; color: white;'
+  //       : 'background: transparent; border: 1px solid #3f51b5; color: #3f51b5;'
+  //   }
+  // }
 </script>
 
 <style>
@@ -647,6 +603,13 @@
     animation: fadeInGlow 2s ease;
     position: relative;
     overflow: hidden;
+  }
+  .text-outline {
+    text-shadow:
+      -1px -1px 0 #a1c4fd,
+      1px -1px 0 #a1c4fd,
+      -1px 1px 0 #a1c4fd,
+      1px 1px 0 #a1c4fd;
   }
 
   .banner-glow::before {
