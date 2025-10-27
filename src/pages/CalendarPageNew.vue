@@ -471,6 +471,7 @@ const authStore = useAuthStore()
   })
 
   function openAddDialog() {
+    if(authStore.mode == 'guest') return;
     editMode.value = false
     Object.assign(form, {
       id: null,
