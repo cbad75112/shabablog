@@ -4,7 +4,7 @@
 時間: 2025/6/5 下午2:20:27
 ---
 
-## 問題說明
+### 問題說明
 
 在建立 ASP.NET Core API 時，若前端（例如 Quasar 或 Vue）無法連線成功，常見原因之一是 **CORS（跨來源資源共享）** 未正確設定。
 
@@ -12,7 +12,7 @@
 
 ---
 
-## Startup.cs 設定範例
+#### Startup.cs 設定範例
 
 ```csharp
 public class Startup
