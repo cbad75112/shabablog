@@ -1,1 +1,0 @@
-import{ay as s,a3 as t,a4 as o,a5 as r,a6 as e,am as l}from"./index-BXKJSB8A.js";const c={name:"BlogPage"};function d(n,a,p,i,_,f){return o(),t(l,{flat:"",bordered:"",class:"q-pa-md"},{default:r(()=>a[0]||(a[0]=[e("div",{class:"text-h5"},"📝 Blog",-1),e("p",null,"Blog articles will be listed here.",-1)])),_:1,__:[0]})}const m=s(c,[["render",d]]);export{m as default};
