@@ -1,4 +1,7 @@
 
+import ResumePage  from "pages/ResumePage.vue"
+import CalendarPageNew  from "pages/CalendarPageNew.vue"
+
 const routes = [
   {
     path: '/',
@@ -12,13 +15,13 @@ const routes = [
         component: () => import('pages/NotesPage.vue')
       }
       ,
-      { path: 'calendar',name: 'calendar', component: () => import('pages/CalendarPageNew.vue') },
+      { path: 'calendar',name: 'calendar', component:CalendarPageNew,
       { path: 'tags', component: () => import('pages/TagsPage.vue') },
       { path: 'formatter', component: () => import('pages/CodeFormatterPage.vue') },
       { path: 'work', component: () => import('pages/WorkLinksPage.vue') },
       { path: 'filetrans', component: () => import('pages/FileToolsPage.vue') },
-      { path: 'resume', component: () => import('pages/ResumePage.vue') },
-      { path: 'tasks', component: () => import('pages/WorkTasksPage.vue') },
+      { path: 'resume', component: ResumePage,
+      { path: 'tasks', component: () => import('pages/WorkTasksPage.vuFe') },
       { path: 'about', component: () => import('pages/AboutPage.vue') }
       
     ]
